@@ -8,7 +8,7 @@ Base = declarative_base()
 
 # User Table
 class User(Base):
-    _tablename_ = 'user'
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
@@ -16,7 +16,7 @@ class User(Base):
 
 # Data Barang Table
 class DataBarang(Base):
-    _tablename_ = 'data_barang'
+    __tablename__ = 'data_barang'
     id_barang = Column(String, primary_key=True)
     nama_barang = Column(String, nullable=False)
     harga = Column(Integer, nullable=False)
@@ -25,13 +25,13 @@ class DataBarang(Base):
 
 # Data Jenis Table
 class DataJenis(Base):
-    _tablename_ = 'data_jenis'
+    __tablename__ = 'data_jenis'
     id_jenis_barang = Column(String, primary_key=True)
     nama_jenis = Column(String, nullable=False)
 
 # Data Pelanggan Table
 class DataPelanggan(Base):
-    _tablename_ = 'data_pelanggan'
+    __tablename__ = 'data_pelanggan'
     id_pelanggan = Column(String, primary_key=True)
     nama = Column(String, nullable=False)
     alamat = Column(String, nullable=False)
@@ -40,7 +40,7 @@ class DataPelanggan(Base):
 
 # Data Transaksi Table
 class DataTransaksi(Base):
-    _tablename_ = 'data_transaksi'
+    __tablename__ = 'data_transaksi'
     id_transaksi = Column(String, primary_key=True)
     id_pelanggan = Column(String, ForeignKey('data_pelanggan.id_pelanggan'), nullable=False)
     tanggal = Column(Date, nullable=False)
@@ -50,7 +50,7 @@ class DataTransaksi(Base):
 
 # Data Detail Transaksi Table
 class DataDetailTransaksi(Base):
-    _tablename_ = 'data_detail_transaksi'
+    __tablename__ = 'data_detail_transaksi'
     id_pelanggan = Column(String, ForeignKey('data_pelanggan.id_pelanggan'), nullable=False)
     id_barang = Column(String, ForeignKey('data_barang.id_barang'), nullable=False)
     id_transaksi = Column(String, ForeignKey('data_transaksi.id_transaksi'), nullable=False)
@@ -58,7 +58,7 @@ class DataDetailTransaksi(Base):
     subtotal = Column(Integer, nullable=False)
 
     # Defining composite primary key
-    _table_args_ = (
+    __table_args__ = (
         PrimaryKeyConstraint('id_pelanggan', 'id_barang', 'id_transaksi'),
     )
 
@@ -304,7 +304,7 @@ def tambah_data_barang_awal():
     print("Data barang awal berhasil ditambahkan.")
 
 # Main program
-if _name_ == "_main_":
+if __name__ == "__main__":
     # Tambah data barang hardcoded ke dalam database saat pertama kali menjalankan program
     tambah_data_barang_awal()
     
