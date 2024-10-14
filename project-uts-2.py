@@ -194,6 +194,16 @@ def menu_pelanggan():
         else:
             print("Pilihan tidak valid. Coba lagi.")
 
+# Fungsi untuk menampilkan semua data barang
+def tampilkan_semua_barang():
+    barang_list = session.query(DataBarang).all()
+    if barang_list:
+        print("\n===== Daftar Barang =====")
+        for barang in barang_list:
+            print(f"Nama Barang: {barang.nama_barang}, Harga: {barang.harga}, Stok: {barang.stock}")
+    else:
+        print("Tidak ada barang yang tersedia.")
+
 # Fungsi Beli Barang untuk pelanggan
 def beli_barang():
     print("\n===== Masukkan Data Pelanggan =====")
@@ -216,6 +226,9 @@ def beli_barang():
         session.add(pelanggan_baru)
         session.commit()
         print("Pelanggan baru berhasil ditambahkan.")
+    
+    # Tampilkan daftar barang yang tersedia
+    tampilkan_semua_barang()
 
     # Pilih barang untuk dibeli dengan input nama barang
     nama_barang = input("Masukkan Nama Barang yang ingin dibeli: ")
