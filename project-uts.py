@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
 engine = create_engine('sqlite:///project-uts.db')
 Base = declarative_base()
@@ -22,7 +21,7 @@ class Barang(Base):
     nama_barang = Column(String(35), nullable=False)
     harga = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False)
-    id_jenis_barang = Column(Integer, ForeignKey('jenis_barang.id_jenis_barang'))
+    id_jenis_barang = Column(Integer, ForeignKey('Data Jenis.id_jenis_barang'))
     jenis = relationship("DataJenis", back_populates="barang")
 
 # Tabel Data Jenis Barang
@@ -46,7 +45,7 @@ class Pelanggan(Base):
 class Transaksi(Base):
     __tablename__ = 'Data Transaksi'
     id_transaksi = Column(Integer, primary_key=True)
-    id_pelanggan = Column(Integer, ForeignKey('pelanggan.id_pelanggan'))
+    id_pelanggan = Column(Integer, ForeignKey('Pelanggan.id_pelanggan'))
     pelanggan = relationship("Pelanggan", back_populates="transaksi")
     tanggal = Column(Date, nullable=False)
     total = Column(Float, nullable=False)
@@ -67,6 +66,9 @@ class DetailTransaksi(Base):
     pelanggan = relationship("Pelanggan")
     barang = relationship("Barang")
     transaksi = relationship("Transaksi")
+
+# Buat tabel dari class yang sudah dibuat
+Base.metadata.create_all(engine)
 
 if __name__ == "__main__":
     print("Test")
