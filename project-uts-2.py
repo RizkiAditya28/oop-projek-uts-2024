@@ -304,7 +304,7 @@ def tambah_data_barang_awal():
     print("Data barang awal berhasil ditambahkan.")
 
 # Main program
-if __name__ == "_main_":
+if __name__ == "__main__":
     # Tambah data barang hardcoded ke dalam database saat pertama kali menjalankan program
     tambah_data_barang_awal()
     
