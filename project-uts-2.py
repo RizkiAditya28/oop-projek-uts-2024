@@ -178,15 +178,18 @@ def menu_pelanggan():
     while True:
         print("\n===== Menu Pelanggan =====")
         print("1. Beli Barang")
-        print("2. Lihat Detail Transaksi")
-        print("3. Kembali ke Menu Awal")
+        print("2. Hapus Transaksi")
+        print("3. Lihat Detail Transaksi")
+        print("4. Kembali ke Menu Awal")
         pilihan = input("Pilih menu pelanggan: ")
 
         if pilihan == "1":
             beli_barang()
         elif pilihan == "2":
-            lihat_detail_transaksi_pelanggan()
+            hapus_transaksi_pelanggan()  # Panggil fungsi hapus transaksi
         elif pilihan == "3":
+            lihat_detail_transaksi_pelanggan()
+        elif pilihan == "4":
             break
         else:
             print("Pilihan tidak valid. Coba lagi.")
@@ -262,6 +265,33 @@ def beli_barang():
 
     session.commit()
     print("Pembelian berhasil.")
+
+# Fungsi untuk menghapus transaksi pelanggan
+def hapus_transaksi_pelanggan():
+    id_pelanggan = input("Masukkan ID Pelanggan: ")
+    id_transaksi = input("Masukkan ID Transaksi yang ingin dihapus: ")
+
+    # Cari detail transaksi berdasarkan id_pelanggan dan id_transaksi
+    detail_transaksi = session.query(DataDetailTransaksi).filter_by(id_pelanggan=id_pelanggan, id_transaksi=id_transaksi).all()
+    
+    if detail_transaksi:
+        # Hapus detail transaksi
+        for detail in detail_transaksi:
+            # Kembalikan stock barang yang dibeli
+            barang = session.query(DataBarang).filter_by(id_barang=detail.id_barang).first()
+            if barang:
+                barang.stock += detail.jumlah_beli
+            session.delete(detail)
+        
+        # Hapus transaksi utama setelah semua detail transaksi dihapus
+        transaksi = session.query(DataTransaksi).filter_by(id_transaksi=id_transaksi).first()
+        if transaksi:
+            session.delete(transaksi)
+        
+        session.commit()
+        print(f"Transaksi dengan ID {id_transaksi} berhasil dihapus dan stock barang dikembalikan.")
+    else:
+        print(f"Tidak ditemukan transaksi dengan ID {id_transaksi} untuk pelanggan ini.")
 
 # Pelanggan dapat melihat detail transaksi mereka sendiri
 def lihat_detail_transaksi_pelanggan():
