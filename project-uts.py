@@ -2,7 +2,10 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
+engine = create_engine('sqlite:///project-uts.db')
 Base = declarative_base()
+Session = sessionmaker(bind=engine)
+session = Session()
 
 # Tabel User
 class User(Base):
